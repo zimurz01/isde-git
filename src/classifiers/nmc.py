@@ -35,7 +35,14 @@ class NMC(object):
         return self._class_labels
 
     def fit(self, xtr, ytr):
-        pass
+        self._class_labels = np.unique(ytr)
+        n_classes = self._class_labels.size
+        n_features = xtr.shape[1]
+        self._centroids = np.zeros(shape=(n_classes, n_features))
+        for k, label in enumerate(
+                self._class_labels):  # media di tutte le immagini della classe k
+            self._centroids[k, :] = xtr[ytr == label, :].mean(axis=0)
+            return self
 
     def predict(self, xts):
         pass
