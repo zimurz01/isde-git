@@ -1,3 +1,5 @@
+from math import dist
+
 import numpy as np
 from sklearn.metrics.pairwise import euclidean_distances
 
@@ -44,5 +46,10 @@ class NMC(object):
             self._centroids[k, :] = xtr[ytr == label, :].mean(axis=0)
             return self
 
+    
     def predict(self, xts):
-        pass
+        if self._centroids is None:
+            raise ValueError("Train the classifier first (call fit).")
+        dist = euclidean_distances(xts, self._centroids) # (n_test,n_classi)
+        idx_min = np.argmin(dist, axis=1) # indice del centroide più vicino
+        return self._class_labels[idx_min]
